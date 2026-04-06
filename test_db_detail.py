@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+9#!/usr/bin/env python3
 """Execute database.py and capture any errors"""
 import sys
 import io
@@ -50,9 +50,9 @@ except ImportError as e:
 print("\nAttempting to reload the module...")
 import importlib
 try:
-    importlib.reload(app.database)
+    importlib.reload(db)
     print("✓ Reloaded")
-    print(f"After reload: {[x for x in dir(app.database) if not x.startswith('_')]}")
+    print(f"After reload: {[x for x in dir(db) if not x.startswith('_')]}")
 except Exception as e:
     print(f"✗ Error: {e}")
     import traceback
