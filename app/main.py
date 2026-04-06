@@ -4,7 +4,7 @@ Multi-tiered pricing with EPRA regulatory adjustments
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import rates_router, pricing_router
+from app.routers import rates_router, pricing_router, federation_router
 from app.database import engine, Base
 
 # Create FastAPI app
@@ -33,6 +33,7 @@ async def health_check():
 # Include routers
 app.include_router(rates_router)
 app.include_router(pricing_router)
+app.include_router(federation_router)
 
 
 # Startup event - create tables
@@ -58,6 +59,7 @@ async def root():
         "endpoints": {
             "rates": "/api/rates",
             "pricing": "/api/consumption",
+            "federation": "/api/federation",
         },
     }
 

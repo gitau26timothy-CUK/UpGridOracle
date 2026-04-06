@@ -104,3 +104,39 @@ class BillingSummaryResponse(BaseModel):
     total_consumption_kwh: float
     invoices: list[InvoiceResponse]
     total_billed_kes: float
+
+
+# ===== Federation / Market Schemas =====
+class BidCreate(BaseModel):
+    """Per-household price bid for a settlement interval"""
+    customer_id: str
+    settlement_interval: str = Field(..., description="ISO timestamp or interval id")
+    bid_price_kes: float = Field(..., gt=0, description="Price offered per kWh in KES")
+
+
+class BidResponse(BidCreate):
+    id: str
+    status: str = Field("accepted")
+
+
+class GradientUpdate(BaseModel):
+    """A client's (encrypted/encoded) gradient update placeholder"""
+    client_id: str
+    model_version: str
+    update_payload: str  # opaque, frontend will send an encrypted/encoded blob
+    timestamp: datetime
+
+
+class AggregationResult(BaseModel):
+    """Result of a federated aggregation run"""
+    aggregated_model_version: str
+    clients_aggregated: int
+    epsilon: float = Field(..., description="DP epsilon used; should be <=1.0 for production")
+
+
+class PriceSignal(BaseModel):
+    """Price signal emitted by the cloud to consumers"""
+    billing_period: str
+    settlement_interval: str
+    price_kes: float
+    metadata: dict = Field(default_factory=dict)
