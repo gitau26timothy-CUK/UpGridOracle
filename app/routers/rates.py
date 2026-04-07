@@ -24,7 +24,7 @@ async def create_rate_tier(tier: RateTierCreate, db: AsyncSession = Depends(get_
     if existing.scalars().first():
         raise HTTPException(status_code=400, detail="Rate tier already exists")
 
-    db_tier = RateTier(**tier.dict())
+    db_tier = RateTier(**tier.model_dump())
     db.add(db_tier)
     await db.commit()
     await db.refresh(db_tier)
@@ -59,7 +59,7 @@ async def update_rate_tier(tier_id: int, tier_update: RateTierCreate, db: AsyncS
     if not db_tier:
         raise HTTPException(status_code=404, detail="Rate tier not found")
 
-    for key, value in tier_update.dict().items():
+    for key, value in tier_update.model_dump().items():
         setattr(db_tier, key, value)
     
     await db.commit()

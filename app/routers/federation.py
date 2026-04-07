@@ -68,7 +68,7 @@ async def submit_bid(bid: BidCreate):
     Returns an acknowledgement to the caller while forwarding to KPLC.
     """
     bid_id = str(uuid.uuid4())
-    record = {"id": bid_id, **bid.dict(), "status": "accepted"}
+    record = {"id": bid_id, **bid.model_dump(), "status": "accepted"}
     _BID_STORE.append(record)
 
     # Fire-and-forget forwarding to KPLC; do not block the caller
@@ -81,7 +81,7 @@ async def submit_bid(bid: BidCreate):
 
     asyncio.create_task(_forward(record))
 
-    return BidResponse(id=bid_id, **bid.dict())
+    return BidResponse(id=bid_id, **bid.model_dump())
 
 
 @router.get("/market/price-signal", response_model=PriceSignal)

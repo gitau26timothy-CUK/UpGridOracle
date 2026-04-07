@@ -32,7 +32,7 @@ router = APIRouter(prefix="/api/consumption", tags=["Consumption & Pricing"])
 @router.post("/record", response_model=ConsumptionResponse)
 async def record_consumption(consumption: ConsumptionCreate, db: AsyncSession = Depends(get_db)):
     """Record customer consumption"""
-    db_consumption = Consumption(**consumption.dict())
+    db_consumption = Consumption(**consumption.model_dump())
     db.add(db_consumption)
     await db.commit()
     await db.refresh(db_consumption)
@@ -93,7 +93,7 @@ async def get_consumption(consumption_id: int, db: AsyncSession = Depends(get_db
 @router.post("/invoice", response_model=InvoiceResponse)
 async def create_invoice(invoice: InvoiceCreate, db: AsyncSession = Depends(get_db)):
     """Create an invoice record from a pricing result"""
-    db_invoice = Invoice(**invoice.dict())
+    db_invoice = Invoice(**invoice.model_dump())
     db.add(db_invoice)
     await db.commit()
     await db.refresh(db_invoice)

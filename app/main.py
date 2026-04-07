@@ -3,15 +3,27 @@ UpGridOracle Energy Pricing API
 Multi-tiered pricing with EPRA regulatory adjustments
 """
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import rates_router, pricing_router, federation_router
 from app.database import engine, Base
 
 # Create FastAPI app
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    try:
+        yield
+    finally:
+        await engine.dispose()
+
+
 app = FastAPI(
     title="UpGridOracle API",
     description="Energy consumption pricing with multi-tier support and EPRA adjustments",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # CORS middleware (allow frontend calls)
@@ -36,18 +48,7 @@ app.include_router(pricing_router)
 app.include_router(federation_router)
 
 
-# Startup event - create tables
-@app.on_event("startup")
-async def startup():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    print("✓ Database tables initialized")
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await engine.dispose()
-    print("✓ Database connection closed")
+# Lifespan handler manages startup (create tables) and shutdown (dispose engine)
 
 
 # Root endpoint
