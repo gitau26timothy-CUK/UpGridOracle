@@ -28,12 +28,16 @@ else:
 # Try to create the async engine and sessionmaker; if this fails, continue
 # with `engine = None` but keep `Base` defined so model classes are mapped.
 try:
-    engine = create_async_engine(
-        settings.database_url,
-        echo=False,       # set True to log every SQL query (useful for debugging)
-        pool_size=10,
-        max_overflow=20,
-    )
+    engine_kwargs = {
+        "echo": False,  # set True to log every SQL query (useful for debugging)
+    }
+    if settings.database_url.startswith("sqlite"):
+        engine_kwargs["connect_args"] = {"check_same_thread": False}
+    else:
+        engine_kwargs["pool_size"] = 10
+        engine_kwargs["max_overflow"] = 20
+
+    engine = create_async_engine(settings.database_url, **engine_kwargs)
 
     # Session factory — creates individual DB sessions per request
     AsyncSessionLocal = async_sessionmaker(
