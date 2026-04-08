@@ -1,12 +1,7 @@
 import uuid
-from fastapi.testclient import TestClient
-
-from app.main import app
 
 
-def test_billing_summary_flow():
-    client = TestClient(app)
-
+def test_billing_summary_flow(client):
     # unique category to avoid conflicts
     category = f"test_cat_{uuid.uuid4().hex[:6]}"
 
