@@ -1,0 +1,16 @@
+[
+  {"hour": 0, "carbon": 0.05, "cost": 18.20, "source": "Geothermal"},
+  {"hour": 2, "carbon": 0.04, "cost": 17.80, "source": "Geothermal"},
+  {"hour": 4, "carbon": 0.04, "cost": 17.50, "source": "Geothermal"},
+  {"hour": 6, "carbon": 0.06, "cost": 19.00, "source": "Geothermal"},
+  {"hour": 8, "carbon": 0.28, "cost": 22.40, "source": "Mixed"},
+  {"hour": 10, "carbon": 0.35, "cost": 23.80, "source": "Mixed"},
+  {"hour": 12, "carbon": 0.42, "cost": 25.10, "source": "Mixed"},
+  {"hour": 14, "carbon": 0.68, "cost": 28.60, "source": "Thermal"},
+  {"hour": 16, "carbon": 0.75, "cost": 30.20, "source": "Thermal"},
+  {"hour": 18, "carbon": 0.91, "cost": 34.50, "source": "Thermal"},
+  {"hour": 20, "carbon": 0.88, "cost": 33.10, "source": "Thermal"},
+  {"hour": 22, "carbon": 0.45, "cost": 25.80, "source": "Mixed"},
+  {"hour": 24, "carbon": 0.05, "cost": 18.20, "source": "Geothermal"}
+]
+
